@@ -13,8 +13,7 @@ const counter = (hole) => {
 
 const onStopGame = (con) => {
     if (con) {
-        deadMoles.textContent = 0;
-        lost.textContent = 0;
+        deadMoles.textContent, lost.textContent = [0, 0];
     } else {
         window.close();
     }
