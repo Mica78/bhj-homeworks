@@ -1,34 +1,37 @@
-const refs = document.getElementsByClassName('has-tooltip')
-const refsArray = Array.from(refs)
-const tooltipPosition = "right"
+const refs = document.getElementsByClassName('has-tooltip');
+const refsArray = Array.from(refs);
+const tooltipPosition = "right";
+
 
 for (const el of refs) {
     el.addEventListener('click', () => {
-        for (const el of refs) {
-            if (el.children[0]) {
-                el.children[0].classList.remove('tooltip_active');
-            }
+        const tooltips = document.getElementsByClassName('tooltip');
+        for (const tooltip of tooltips) {
+            tooltip.remove();
         };
         el.href = "##";
-        const child = document.createElement('span');
-        child.textContent = el.title;
-        child.classList.add('tooltip');
-        el.appendChild(child);
-        child.classList.add('tooltip_active');
-        child.dataset.position = tooltipPosition;
-        child.style.position = 'absolute';
-        child.style.left = el.offsetLeft + 'px';
+        const tooltip = document.createElement('div');
+        tooltip.textContent = el.title;
+        tooltip.classList.add('tooltip');
+        el.insertAdjacentElement("afterend", tooltip);
+        tooltip.classList.add('tooltip_active');
+        tooltip.dataset.position = tooltipPosition;
+        tooltip.style.position = 'absolute';
+        tooltip.style.left = el.offsetLeft + 'px';
         let elCoordinates = el.getBoundingClientRect();
-        let childCoordinates = child.getBoundingClientRect();
-        if (child.dataset.position === 'left') {
-            child.style.left = elCoordinates.x - childCoordinates.width + 'px';
-            child.style.top = window.scrollY + elCoordinates.y + 'px';
+        let childCoordinates = tooltip.getBoundingClientRect();
+        if (tooltip.dataset.position === 'left') {
+            tooltip.style.left = elCoordinates.x - childCoordinates.width + 'px';
+            tooltip.style.top = window.scrollY + elCoordinates.y + 'px';
             console.log(elCoordinates, el.scrollTop, el.scrollHeight)
-        } else if (child.dataset.position === 'right') {
-            child.style.left =  elCoordinates.x + elCoordinates.width + 'px';
-            child.style.top = window.scrollY + elCoordinates.y + 'px';
-        } else if (child.dataset.position === 'top') {
-            child.style.top = window.scrollY + elCoordinates.y - childCoordinates.height + 'px';
+        } else if (tooltip.dataset.position === 'right') {
+            tooltip.style.left =  elCoordinates.x + elCoordinates.width + 'px';
+            tooltip.style.top = window.scrollY + elCoordinates.y + 'px';
+        } else if (tooltip.dataset.position === 'top') {
+            tooltip.style.top = window.scrollY + elCoordinates.y - childCoordinates.height + 'px';
+        };
+        tooltip.onclick = () => {
+            tooltip.remove();
         };
     });
 

@@ -17,17 +17,19 @@ const addProduct = function() {
             if(e.target === inc) {
                 value.textContent = Number(value.textContent) + 1;
             } else if(e.target === dec) {
-                value.textContent = Number(value.textContent) > 0 ? Number(value.textContent) - 1 : value.textContent;
+                value.textContent = Number(value.textContent) > 1 ? Number(value.textContent) - 1 : value.textContent;
             };
             if (e.target.className === 'product__add') {
-                for (let cartProduct of cartProducts.children) {
-                    if (cartProduct.dataset.id === id) {
-                        let count = cartProduct.querySelector('.cart__product-count');
-                        count.textContent = Number(count.textContent) + Number(value.textContent);
-                        isInCart = true;
+                const cards = Array.from(cartProducts.children);
+                const productInCard = cards.find((cart) => {
+                    if (cart.dataset.id === id) {
+                        return cart;
                     };
-                };
-                if (isInCart === false) {
+                });
+                if (productInCard) {
+                    const cartCount = productInCard.querySelector('.cart__product-count');
+                    cartCount.textContent = Number(cartCount.textContent) + Number(value.textContent);
+                } else {
                     cartProducts.insertAdjacentHTML('beforeEnd', htmlExp);
                 };
             };
